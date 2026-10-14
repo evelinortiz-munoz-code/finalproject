@@ -8,7 +8,11 @@
 
 **DATA SECTION**
 
-Snap Benefits Persons June 2026: 
-- Retrieved 
-
-
+SNAP Persons June 2026: 
+- Retrieved: October 13th, 2026
+- Link: https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap
+- Method: Download from USDA website under "State Level Participation & Benefits"
+SNAP Benefits June 2026: 
+- Retrieved: October 13th, 2026
+- Link: https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap
+- Method: Download from USDA website under "State Level Participation & Benefits"
