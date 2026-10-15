@@ -23,4 +23,9 @@ FY26 & FY 25:
 - Link: https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap
 - Method: Download from USDA website under "National and/or State Level Monthly and/or Annual Data," and download the zip folder "FY 69 through FY 26"
 
+Food Insecurity in Rhode Island 2024
+- Retrieved: October 14th, 2026
+- Link: https://map.feedingamerica.org/district/2023/overall/rhode-island/district/02
+- Method: Complete data request form to receive dataset from Feeding America
+
 Note: USDA has cancelled their collection of food insecurity data, follow up with Feeding 
