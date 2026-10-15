@@ -23,4 +23,4 @@ FY26 & FY 25:
 - Link: https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap
 - Method: Download from USDA website under "National and/or State Level Monthly and/or Annual Data," and download the zip folder "FY 69 through FY 26"
 
-Note: USDA has cancelled their collection of food insecurity data
+Note: USDA has cancelled their collection of food insecurity data, follow up with Feeding 
