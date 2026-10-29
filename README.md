@@ -30,9 +30,9 @@ Food Insecurity in Rhode Island 2024
 
 Note: USDA has cancelled their collection of food insecurity data, follow up with Feeding 
 
-**Week 6 Discussion**
+**SHORT TEXT ANALYSIS ASSIGNMENT 10/29**
 - Selected 25 documents on food access and SNAP benefits in Rhode Island
 - Coded the 25 documents by hand and categorized them by publisher type 
 - Dictionary method: made keyword lists for each category so that agent coded the documents accordingly 
-- Discussion: For the most part, the AI agent was able to code 
+- Discussion: For the most part, the AI agent was able to code the documents into the correct categories by the following publisher type categories: news organizations, community organizations, government agencies, and education institutions. However, the first attempt resulted in about 12 uncoded documents. I had to continuously revise the keywords list to further specify the categories. If anything, I didn't expect how much precision and clarification would be necessary for the keywords. It was also easy for the AI agent to mix up some of the categories, especially with certain food banks and government agencies. The dictionary method is helpful for perusing through large sets of documents, however it is essential to write clear keywords for each category. 
 
