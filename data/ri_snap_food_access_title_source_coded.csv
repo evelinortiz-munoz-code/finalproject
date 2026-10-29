@@ -1,13 +1,26 @@
-﻿         Category             │ Docs │
-├──────────────────────────────────┼──────┤
-│ News Organization                │ 12   │
-├──────────────────────────────────┼──────┤
-│ Community/Nonprofit Organization │ 8    │
-├──────────────────────────────────┼──────┤
-│ Education Institution            │ 4    │
-├──────────────────────────────────┼──────┤
-│ Government Organization          │ 1    │
-├──────────────────────────────────┼──────┤
-│ Tie                              │ 1    │
-├──────────────────────────────────┼──────┤
-│ Uncoded                          │ 0
+﻿document_number,document_name,publisher_source,category,n_News Organization,n_Community/Nonprofit Organization,n_Government Organization,n_Education Institution,matched_terms
+1,"2025 Status Report on Hunger in Rhode Island (""Historic Highs"")",Rhode Island Community Food Bank,Community/Nonprofit Organization,0,1,0,0,community (1)
+2,Extra SNAP benefits coming to an end next month,NBC 10 News (WJAR),News Organization,1,0,0,0,news (1)
+3,Rep. Morales helps secure $3 million investment for the Rhode Island Community Food Bank,Rhode Island General Assembly press release,Tie,1,1,1,0,press (1); community (1); assembly (1)
+4,Report: Too many Rhode Islanders are going hungry,The Boston Globe (Dan McGowan),News Organization,1,0,0,0,globe (1)
+5,Food bank says more Rhode Island families can't afford food,Associated Press (via Boston.com),News Organization,1,0,0,0,press (1)
+6,"2024 RI Life Index shows Rhode Islanders perceive continuing challenges in housing, cost of living and food security",Brown University School of Public Health / BCBSRI,Education Institution,0,0,0,3,university (1); school of public health (1); brown university (1)
+7,"Nearly 2 in 5 R.I. households are food insecure, new report says",The Boston Globe (Christopher Gavin),News Organization,1,0,0,0,globe (1)
+8,"More than a third of Rhode Islanders are facing food insecurity, according to a new survey",The Public's Radio (Olivia Ebertz),News Organization,1,0,0,0,radio (1)
+9,Assessing Hunger in Rhode Island: 2025 Updates and the Rhode Island Community Food Bank's Spring Initiatives,Rhode Island Community Food Bank,Community/Nonprofit Organization,0,2,0,0,community (2)
+10,SNAP State Fact Sheet: Rhode Island,Food Research & Action Center (FRAC),Community/Nonprofit Organization,0,1,0,0,center (1)
+11,"SNAP shutdown leaves 145,000 Rhode Islanders facing food insecurity as Nov. 1 deadline looms",Ocean State Media (Isabella Jibilian),News Organization,1,0,0,0,media (1)
+12,Thousands in New England to lose SNAP eligibility as new federal requirements take effect,NBC 10 News (Gabrielle Caracciolo),News Organization,1,0,0,0,news (1)
+13,"'One Big Beautiful Bill Act' threatens Medicaid coverage, SNAP benefits for thousands in R.I., state's analysis finds",The Boston Globe (Christopher Gavin),News Organization,1,0,0,0,globe (1)
+14,5 things to know about SNAP in Rhode Island,Ocean State Media (Justin Kenny),News Organization,1,0,0,0,media (1)
+15,"SNAP data by RI county, State House districts & State Senate districts",Economic Progress Institute (analysis by CBPP),Community/Nonprofit Organization,0,2,0,0,progress (1); institute (1)
+16,Rhode Island Community Food Bank delays release of its annual hunger report,"Rhode Island Current (Christopher Shea), via Providence Business News",News Organization,2,1,0,0,news (1); current (1); community (1)
+17,"Nation's first state-level SNAP fresh produce incentive program shows promise, room to grow",Brown University School of Public Health,Education Institution,0,0,0,3,university (1); school of public health (1); brown university (1)
+18,"Rhode Islanders report challenges with cost of living, access to affordable housing and nutritious food",Brown University News (RI Life Index 2026),Education Institution,1,0,0,2,news (1); university (1); brown university (1)
+19,Why Rhode Island can't afford to lose the race to reduce its SNAP error rate,"Rhode Island Current (Nancy Lavin), via Boston Globe",News Organization,2,0,0,0,globe (1); current (1)
+20,2026 Rhode Island KIDS COUNT Factbook: SNAP Benefits,Rhode Island KIDS COUNT,Community/Nonprofit Organization,0,2,0,0,kids count (2)
+21,"Federal data gaps aside, poverty on the rise as R.I. families struggle to meet basic living expenses","Rhode Island Current (Alexander Castro), via Boston Globe",News Organization,2,0,0,0,globe (1); current (1)
+22,SNAP Update,Economic Progress Institute,Community/Nonprofit Organization,0,2,0,0,progress (1); institute (1)
+23,2026 Rhode Island KIDS COUNT Factbook: School Meals,Rhode Island KIDS COUNT,Community/Nonprofit Organization,0,2,0,0,kids count (2)
+24,Department of Human Services FY 2027 budget presentation,RI House Fiscal Staff,Government Organization,0,0,1,0,department (1)
+25,Food Justice Report (Rhode Island College Food Justice Project),Rhode Island College,Education Institution,0,0,0,2,college (2)
