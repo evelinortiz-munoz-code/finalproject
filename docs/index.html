@@ -5,47 +5,230 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Food Insecurity in Rhode Island</title>
 <style>
-  body { max-width: 760px; margin: 0 auto; padding: 16px; font: 16px/1.5 Georgia, serif; color: #222; background: #fff; }
-  nav a { margin-right: 16px; }
-  h1 { margin-bottom: 4px; }
-  h2 { margin-top: 36px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
-  li { margin-bottom: 12px; }
-  table { border-collapse: collapse; width: 100%; }
-  th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; }
-  small { color: #666; }
-  @media (prefers-color-scheme: dark) { body { background: #151a20; color: #e6e6e6; } th, td, h2 { border-color: #444; } a { color: #8cc4ee; } small { color: #aaa; } }
+  :root {
+    --bg: #f7f5f0; --card: #fff; --ink: #1d2733; --muted: #5d6b7a; --line: #e2ddd2;
+    --accent: #1f5f8b; --accent-ink: #fff; --bad: #b3402a; --ri: #1f5f8b; --other: #b9c2cc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14191f; --card: #1c232b; --ink: #e8ecf0; --muted: #97a4b2; --line: #2b3541;
+            --accent: #6db3e0; --accent-ink: #0d1318; --bad: #ef8a73; --ri: #6db3e0; --other: #485564; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  a { color: var(--accent); }
+  header { background: var(--accent); color: var(--accent-ink); padding: 40px 16px 28px; }
+  header .wrap, main, footer { max-width: 980px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+  header .wrap { padding: 0; }
+  h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.15; }
+  header p { margin: 0; max-width: 62ch; opacity: .92; }
+  nav { position: sticky; top: 0; background: var(--card); border-bottom: 1px solid var(--line); z-index: 5; }
+  nav .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; }
+  nav a { padding: 12px 14px; text-decoration: none; color: var(--ink); font-weight: 600; border-bottom: 3px solid transparent; }
+  nav a:hover, nav a:focus-visible { border-bottom-color: var(--accent); }
+  section { padding: 36px 0 8px; scroll-margin-top: 48px; }
+  h2 { font-size: 1.6rem; margin: 0 0 4px; }
+  .lede { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .stat .n { font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
+  .stat .n.bad { color: var(--bad); }
+  .stat .l { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+  h3 { font-size: 1.1rem; margin: 28px 0 10px; }
+  .news { display: grid; gap: 12px; }
+  .news article { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+  .news h4 { margin: 4px 0 6px; font-size: 1.05rem; line-height: 1.3; }
+  .news p { margin: 0 0 8px; font-size: .95rem; }
+  .meta { color: var(--muted); font-size: .85rem; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .tag { display: inline-block; font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .bars { display: grid; gap: 10px; }
+  .bar { display: grid; grid-template-columns: 110px 1fr 64px; gap: 10px; align-items: center; font-size: .9rem; }
+  .bar .track { background: var(--line); border-radius: 4px; height: 18px; overflow: hidden; }
+  .bar .fill { height: 100%; background: var(--other); }
+  .bar.ri .fill { background: var(--ri); }
+  .bar.ri { font-weight: 700; }
+  .bar .v { text-align: right; font-variant-numeric: tabular-nums; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; background: var(--card); }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.ri td { font-weight: 700; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .filters button { font: inherit; font-size: .85rem; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  .filters button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .note { color: var(--muted); font-size: .88rem; margin-top: 8px; }
+  ul.plain { padding-left: 20px; margin: 0; }
+  ul.plain li { margin-bottom: 8px; }
+  footer { color: var(--muted); font-size: .85rem; padding-top: 32px; padding-bottom: 48px; }
+  @media (max-width: 520px) { .bar { grid-template-columns: 90px 1fr 56px; } nav a { padding: 12px 10px; } }
 </style>
 </head>
 <body>
-<h1>Food Insecurity in Rhode Island</h1>
-<p>Food insecurity in Rhode Island is projected to worsen amid rising grocery prices and federal cuts to SNAP.</p>
-<nav><a href="#news">Current News</a><a href="#data">Data</a><a href="#sources">Sources</a></nav>
+<header>
+  <div class="wrap">
+    <h1>Food Insecurity in Rhode Island</h1>
+    <p>Food insecurity in Rhode Island is projected to worsen amid rising grocery prices and federal cuts to SNAP. This site collects recent news, program data, and the sources behind a decision memo for Rhode Island stakeholders and policymakers.</p>
+  </div>
+</header>
 
-<h2 id="news">Current News</h2>
-<ul>
-  <li><a href="https://economicprogressri.org/resources/snap-update">SNAP Update</a><br><small>Economic Progress Institute, Jun 16, 2026</small></li>
-  <li><a href="https://bostonglobe.com/2026/05/04/metro/rhode-island-kids-factbook-poverty-increase-noted/">Federal data gaps aside, poverty on the rise as R.I. families struggle to meet basic living expenses</a><br><small>Rhode Island Current, via Boston Globe, May 4, 2026</small></li>
-  <li><a href="https://www.bostonglobe.com/2026/04/20/metro/snap-error-rate-food-assistance-ri/">Why Rhode Island can't afford to lose the race to reduce its SNAP error rate</a><br><small>Rhode Island Current, via Boston Globe, Apr 20, 2026</small></li>
-  <li><a href="https://www.brown.edu/news/2026-02-04/ri-life-index">Rhode Islanders report challenges with cost of living, access to affordable housing and nutritious food</a><br><small>Brown University News, Feb 4, 2026</small></li>
-  <li><a href="https://rifoodbank.org/2025-status-report/">2025 Status Report on Hunger in Rhode Island ("Historic Highs")</a><br><small>Rhode Island Community Food Bank, Jan 27, 2026 (scheduled)</small></li>
-</ul>
+<nav aria-label="Sections"><div class="wrap">
+  <a href="#news">Current News</a>
+  <a href="#data">Data</a>
+  <a href="#sources">Sources</a>
+</div></nav>
 
-<h2 id="data">Data</h2>
-<p>SNAP participants and benefits, June 2026 compared with June 2025 (USDA, data as of September 11, 2026).</p>
-<table>
-  <tr><th>Area</th><th>Persons, Jun 2026</th><th>Change</th><th>Benefits, Jun 2026</th><th>Change</th></tr>
-  <tr><td><strong>Rhode Island</strong></td><td>117,128</td><td>−17.4%</td><td>$22,685,256</td><td>−18.7%</td></tr>
-  <tr><td>Massachusetts</td><td>889,327</td><td>−17.6%</td><td>$173,550,297</td><td>−8.6%</td></tr>
-  <tr><td>Connecticut</td><td>304,528</td><td>−15.8%</td><td>$57,987,429</td><td>−16.0%</td></tr>
-  <tr><td>United States</td><td>36,352,716</td><td>−12.8%</td><td>$6,781,046,574</td><td>−13.0%</td></tr>
-</table>
+<main>
 
-<h2 id="sources">Sources</h2>
-<ul>
-  <li><a href="https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap">USDA SNAP data</a> (persons and benefits June 2026; FY25 and FY26). Retrieved Oct 13, 2026.</li>
-  <li><a href="https://map.feedingamerica.org/district/2023/overall/rhode-island/district/02">Feeding America, Food Insecurity in Rhode Island 2024</a>. Retrieved Oct 14, 2026 by data request.</li>
-  <li><a href="https://www.federalregister.gov/api/v1/documents.json">Federal Register API</a> (USDA and HHS rules, 2025). Retrieved Oct 13, 2026.</li>
-  <li>News articles above, from the 25 documents collected in <code>data/ri_snap_food_access_documents.csv</code>.</li>
-</ul>
+<section id="news">
+  <h2>Current News</h2>
+  <p class="lede">The most recent coverage and reports on SNAP and food access in Rhode Island, newest first, drawn from the 25 documents collected for this project.</p>
+  <div class="news" id="newsList"></div>
+</section>
+
+<section id="data">
+  <h2>Data</h2>
+  <p class="lede">USDA SNAP state-level participation and benefits, June 2026 (initial) compared with June 2025. Data as of September 11, 2026.</p>
+
+  <div class="grid">
+    <div class="card stat"><div class="n">117,128</div><div class="l">Rhode Islanders on SNAP, June 2026</div></div>
+    <div class="card stat"><div class="n bad">−17.4%</div><div class="l">Change in participants vs. June 2025 (141,802)</div></div>
+    <div class="card stat"><div class="n">$22.7M</div><div class="l">Monthly SNAP benefits, June 2026</div></div>
+    <div class="card stat"><div class="n bad">−18.7%</div><div class="l">Change in benefits vs. June 2025 ($27.9M)</div></div>
+  </div>
+
+  <h3>Change in SNAP participants, June 2025 to June 2026</h3>
+  <div class="card"><div class="bars" id="bars" role="img" aria-label="Bar chart of percent decline in SNAP participants: Rhode Island 17.4, Massachusetts 17.6, Connecticut 15.8, United States 12.8"></div></div>
+
+  <h3>Rhode Island and neighbors</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Area</th><th class="num">Persons, Jun 2025</th><th class="num">Persons, Jun 2026</th><th class="num">Change</th><th class="num">Benefits, Jun 2026</th><th class="num">Change</th></tr></thead>
+    <tbody>
+      <tr class="ri"><td>Rhode Island</td><td class="num">141,802</td><td class="num">117,128</td><td class="num">−17.4%</td><td class="num">$22,685,256</td><td class="num">−18.7%</td></tr>
+      <tr><td>Massachusetts</td><td class="num">1,079,234</td><td class="num">889,327</td><td class="num">−17.6%</td><td class="num">$173,550,297</td><td class="num">−8.6%</td></tr>
+      <tr><td>Connecticut</td><td class="num">361,655</td><td class="num">304,528</td><td class="num">−15.8%</td><td class="num">$57,987,429</td><td class="num">−16.0%</td></tr>
+      <tr><td>United States</td><td class="num">41,678,341</td><td class="num">36,352,716</td><td class="num">−12.8%</td><td class="num">$6,781,046,574</td><td class="num">−13.0%</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Rhode Island's May-to-June 2026 drop (−4.4% persons, −6.4% benefits) was steeper than the national month-over-month change (−0.9%, −1.3%).</p>
+
+  <h3>Reliability of the AI-coded source labels</h3>
+  <p class="lede">Each of the 25 documents was labeled by publisher type by hand, then again by a keyword-dictionary script. The two methods are compared below.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Publisher type</th><th class="num">Documents</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">F1</th></tr></thead>
+    <tbody>
+      <tr><td>News Organization</td><td class="num">12</td><td class="num">1.00</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+      <tr><td>Community/Nonprofit Organization</td><td class="num">7</td><td class="num">1.00</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+      <tr><td>Education Institution</td><td class="num">4</td><td class="num">1.00</td><td class="num">1.00</td><td class="num">1.00</td></tr>
+      <tr><td>Government Organization</td><td class="num">2</td><td class="num">1.00</td><td class="num">0.50</td><td class="num">0.67</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">The script matched the hand coding for 24 of 25 documents. The one miss was a government document it scored as a tie.</p>
+
+  <h3>Files in the data folder</h3>
+  <ul class="plain">
+    <li><strong>SNAP persons and benefits, June 2026</strong> (<code>snap_personsjune2026.csv</code>, <code>snap_benefitsjune2026.csv</code>): state-level USDA tables.</li>
+    <li><strong>FY25 and FY26 workbooks</strong> (<code>FY25.xlsx</code>, <code>FY26.xlsx</code>): USDA national and state monthly and annual data.</li>
+    <li><strong>Federal Register rules, 2025</strong>: final and proposed rules from USDA (115 matching, 100 retrieved) and HHS (174 matching, 100 retrieved), collected on October 13, 2026 through the Federal Register API, with coded versions and codebooks.</li>
+    <li><strong>RI SNAP and food access documents</strong>: the 25 collected documents, their codebook, and the coded and evaluated versions.</li>
+    <li><strong>Food Insecurity in Rhode Island 2024</strong>: dataset requested from Feeding America. USDA has cancelled its own food insecurity data collection.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2>Sources</h2>
+  <p class="lede">Where the data comes from, and the 25 documents behind the news and analysis.</p>
+
+  <h3>Data sources</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Dataset</th><th>Retrieved</th><th>Method</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap">SNAP Persons and Benefits, June 2026</a></td><td>Oct 13, 2026</td><td>USDA website, “State Level Participation &amp; Benefits”</td></tr>
+      <tr><td><a href="https://www.fna.usda.gov/pd/supplemental-nutrition-assistance-program-snap">FY25 and FY26 SNAP data</a></td><td>Oct 13, 2026</td><td>USDA website, “National and/or State Level Monthly and/or Annual Data,” zip folder “FY 69 through FY 26”</td></tr>
+      <tr><td><a href="https://map.feedingamerica.org/district/2023/overall/rhode-island/district/02">Food Insecurity in Rhode Island 2024</a></td><td>Oct 14, 2026</td><td>Data request form to Feeding America</td></tr>
+      <tr><td><a href="https://www.federalregister.gov/api/v1/documents.json">Federal Register rules and proposed rules, 2025</a></td><td>Oct 13, 2026</td><td>Federal Register API, USDA and HHS</td></tr>
+      <tr><td><a href="https://fred.stlouisfed.org/series/BRRI44M647NCEN">FRED: Rhode Island series</a> (proposed)</td><td>n/a</td><td>Proposed source</td></tr>
+      <tr><td><a href="https://www.ers.usda.gov/data-products/food-access-research-atlas/mapping-tools/large-retailer-access-map">USDA ERS Large Retailer Access Map</a> (proposed)</td><td>n/a</td><td>Proposed source</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Documents collected</h3>
+  <div class="filters" id="filters" role="group" aria-label="Filter by publisher type"></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Title</th><th>Publisher</th><th>Type</th><th>Date</th></tr></thead>
+    <tbody id="docs"></tbody>
+  </table></div>
+</section>
+
+</main>
+
+<footer>
+  Final project, MPA AI. Figures are from the files in this folder; see the README for the full problem definition and Week 6 discussion.
+</footer>
+
+<script>
+  // type: N = News Organization, C = Community/Nonprofit, E = Education Institution, G = Government Organization
+  var TYPES = { N: "News", C: "Community / Nonprofit", E: "Education", G: "Government" };
+  // [id, title, publisher, type, display date, sort date, url, summary (news only)]
+  var DOCS = [
+    [22, "SNAP Update", "Economic Progress Institute", "C", "Jun 16, 2026", "2026-06-16", "https://economicprogressri.org/resources/snap-update", "Latest SNAP update from the Economic Progress Institute."],
+    [21, "Federal data gaps aside, poverty on the rise as R.I. families struggle to meet basic living expenses", "Rhode Island Current, via Boston Globe", "N", "May 4, 2026", "2026-05-04", "https://bostonglobe.com/2026/05/04/metro/rhode-island-kids-factbook-poverty-increase-noted/", "Coverage of the 2026 KIDS COUNT Factbook, which notes rising poverty among Rhode Island families."],
+    [19, "Why Rhode Island can't afford to lose the race to reduce its SNAP error rate", "Rhode Island Current, via Boston Globe", "N", "Apr 20, 2026", "2026-04-20", "https://www.bostonglobe.com/2026/04/20/metro/snap-error-rate-food-assistance-ri/", "Why the state's SNAP error rate matters as federal cost-sharing rules change."],
+    [20, "2026 Rhode Island KIDS COUNT Factbook: SNAP Benefits", "Rhode Island KIDS COUNT", "C", "Apr 2026", "2026-04-01", "https://rikidscount.org/wp-content/uploads/2026/04/2026_rhode-island-kids-count-factbook_snap-benefits.pdf", ""],
+    [23, "2026 Rhode Island KIDS COUNT Factbook: School Meals", "Rhode Island KIDS COUNT", "C", "Apr 2026", "2026-04-01", "https://rikidscount.org/wp-content/uploads/2026/04/2026_rhode-island-kids-count-factbook_school-meals.pdf", ""],
+    [24, "Department of Human Services FY 2027 budget presentation", "RI House Fiscal Staff", "G", "Mar 25, 2026", "2026-03-25", "https://rilegislature.gov/housefiscalreport/2020/DHS%20FY%202027.pdf", ""],
+    [18, "Rhode Islanders report challenges with cost of living, access to affordable housing and nutritious food", "Brown University News (RI Life Index 2026)", "E", "Feb 4, 2026", "2026-02-04", "https://www.brown.edu/news/2026-02-04/ri-life-index", "The 2026 RI Life Index finds continuing concern about cost of living, housing and food."],
+    [1, "2025 Status Report on Hunger in Rhode Island (“Historic Highs”)", "Rhode Island Community Food Bank", "C", "Jan 27, 2026 (scheduled)", "2026-01-27", "https://rifoodbank.org/2025-status-report/", "Annual hunger report, delayed to reflect the fall 2025 federal shutdown. Search coverage cites 102,000+ people needing help during the SNAP lapse, a record."],
+    [16, "Rhode Island Community Food Bank delays release of its annual hunger report", "Rhode Island Current, via Providence Business News", "N", "Nov 28, 2025", "2025-11-28", "https://pbn.com/rhode-island-community-food-bank-delays-release-of-its-annual-hunger-report/", "The Food Bank pushed its report back from Thanksgiving because of the federal shutdown."],
+    [17, "Nation's first state-level SNAP fresh produce incentive program shows promise, room to grow", "Brown University School of Public Health", "E", "Nov 25, 2025", "2025-11-25", "https://sph.brown.edu/news/2025-11-25/eat-well-be-well-results", "Results from Rhode Island's Eat Well Be Well produce incentive program."],
+    [15, "SNAP data by RI county, State House districts & State Senate districts", "Economic Progress Institute (analysis by CBPP)", "C", "Nov 5, 2025", "2025-11-05", "https://economicprogressri.org/publications/supplemental-nutrition-assistance-program-snap-data-by-ri-county-state-house-districts-state-senate-districts", ""],
+    [14, "5 things to know about SNAP in Rhode Island", "Ocean State Media (Justin Kenny)", "N", "Nov 4, 2025", "2025-11-04", "https://www.oceanstatemedia.org/news-and-culture/5-things-to-know-about-snap-in-rhode-island", "An explainer on how SNAP works in the state during the benefit disruption."],
+    [13, "‘One Big Beautiful Bill Act’ threatens Medicaid coverage, SNAP benefits for thousands in R.I., state's analysis finds", "The Boston Globe (Christopher Gavin)", "N", "Oct 31, 2025", "2025-10-31", "https://www.bostonglobe.com/2025/10/31/metro/big-beautiful-bill-ri-impact/", "A state analysis dated Oct 30, 2025 estimates the federal law's impact on Medicaid and SNAP in Rhode Island."],
+    [12, "Thousands in New England to lose SNAP eligibility as new federal requirements take effect", "NBC 10 News (Gabrielle Caracciolo)", "N", "Oct 31, 2025", "2025-10-31", "https://turnto10.com/news/local/thousands-in-new-england-to-lose-snap-eligibility-as-new-federal-requirements-take-effect-supplemental-nutrion-assistance-program-rhode-island-massachusetts-october-31-2025", "New federal requirements remove SNAP eligibility for thousands across New England."],
+    [11, "SNAP shutdown leaves 145,000 Rhode Islanders facing food insecurity as Nov. 1 deadline looms", "Ocean State Media (Isabella Jibilian)", "N", "Oct 29, 2025", "2025-10-29", "https://www.oceanstatemedia.org/rhode-island-food-stamps-snap-benefits-november-federal-shutdown", "About 145,000 Rhode Islanders face a SNAP lapse as the shutdown deadline approaches."],
+    [9, "Assessing Hunger in Rhode Island: 2025 Updates and the Rhode Island Community Food Bank's Spring Initiatives", "Rhode Island Community Food Bank", "C", "Mar 2025 (approx.)", "2025-03-01", "https://rifoodbank.org/assessing-hunger-in-rhode-island-2025-updates-and-the-rhode-island-community-food-banks-spring-initiatives/", ""],
+    [10, "SNAP State Fact Sheet: Rhode Island", "Food Research & Action Center (FRAC)", "C", "Feb 2025", "2025-02-25", "https://frac.org/wp-content/uploads/SNAP_FactSheets_022525_RI40.pdf", ""],
+    [6, "2024 RI Life Index shows Rhode Islanders perceive continuing challenges in housing, cost of living and food security", "Brown University School of Public Health / BCBSRI", "E", "Dec 11, 2024", "2024-12-11", "https://sph.brown.edu/news/2024-12-11/ri-life-index-2024-press-release", ""],
+    [8, "More than a third of Rhode Islanders are facing food insecurity, according to a new survey", "The Public's Radio (Olivia Ebertz)", "N", "Nov 26, 2024", "2024-11-26", "https://thepublicsradio.org/health/more-than-a-third-of-rhode-islanders-are-going-hungry-according-to-a-new-survey/", ""],
+    [7, "Nearly 2 in 5 R.I. households are food insecure, new report says", "The Boston Globe (Christopher Gavin)", "N", "Nov 25, 2024", "2024-11-25", "https://www.bostonglobe.com/2024/11/25/metro/two-in-five-rhode-island-households-food-insecure-2024-report", ""],
+    [3, "Rep. Morales helps secure $3 million investment for the Rhode Island Community Food Bank", "Rhode Island General Assembly press release", "G", "Jun 20, 2023", "2023-06-20", "https://www.rilegislature.gov/pressrelease/Lists/PressReleases/DispForm.aspx?ID=373783", ""],
+    [4, "Report: Too many Rhode Islanders are going hungry", "The Boston Globe (Dan McGowan)", "N", "Nov 21, 2023", "2023-11-21", "https://www.bostonglobe.com/2023/11/21/metro/report-too-many-rhode-islanders-are-going-hungry", ""],
+    [2, "Extra SNAP benefits coming to an end next month", "NBC 10 News (WJAR)", "N", "Jan 9, 2023", "2023-01-09", "https://www.turnto10.com/news/local/snap-benefits-food-stamp-grocery-emergency-allotment-program-rhode-island-housing-massachusetts-covid19-pandemic-food-resident-assistance-government-monthly-benefit-resource-january-9-2023", ""],
+    [5, "Food bank says more Rhode Island families can't afford food", "Associated Press (via Boston.com)", "N", "Nov 21, 2022", "2022-11-21", "https://www.boston.com/news/local-news/2022/11/21/food-bank-says-more-rhode-island-families-cant-afford-food/", ""],
+    [25, "Food Justice Report", "Rhode Island College Food Justice Project", "E", "Spring 2022", "2022-04-01", "https://our.ric.edu/documents/food-justice-report", ""]
+  ];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  // Current News: documents with a summary, newest first
+  var news = DOCS.filter(function (d) { return d[7]; }).slice(0, 8);
+  document.getElementById("newsList").innerHTML = news.map(function (d) {
+    return '<article><span class="tag">' + TYPES[d[3]] + '</span><h4><a href="' + esc(d[6]) + '">' + esc(d[1]) + '</a></h4>' +
+      '<p>' + esc(d[7]) + '</p><div class="meta"><span>' + esc(d[2]) + '</span><span>' + esc(d[4]) + '</span></div></article>';
+  }).join("");
+
+  // Bar chart
+  var bars = [["Rhode Island", 17.4, true], ["Massachusetts", 17.6], ["Connecticut", 15.8], ["United States", 12.8]];
+  document.getElementById("bars").innerHTML = bars.map(function (b) {
+    return '<div class="bar' + (b[2] ? ' ri' : '') + '"><span>' + b[0] + '</span><div class="track"><div class="fill" style="width:' + (b[1] / 20 * 100) + '%"></div></div><span class="v">−' + b[1] + '%</span></div>';
+  }).join("");
+
+  // Sources table with filter
+  var current = "all";
+  function renderDocs() {
+    document.getElementById("docs").innerHTML = DOCS.filter(function (d) { return current === "all" || d[3] === current; }).map(function (d) {
+      return '<tr><td><a href="' + esc(d[6]) + '">' + esc(d[1]) + '</a></td><td>' + esc(d[2]) + '</td><td>' + TYPES[d[3]] + '</td><td>' + esc(d[4]) + '</td></tr>';
+    }).join("");
+    Array.prototype.forEach.call(document.querySelectorAll("#filters button"), function (b) {
+      b.setAttribute("aria-pressed", b.dataset.t === current);
+    });
+  }
+  var f = document.getElementById("filters");
+  f.innerHTML = '<button data-t="all">All (' + DOCS.length + ')</button>' + Object.keys(TYPES).map(function (k) {
+    var n = DOCS.filter(function (d) { return d[3] === k; }).length;
+    return '<button data-t="' + k + '">' + TYPES[k] + ' (' + n + ')</button>';
+  }).join("");
+  f.addEventListener("click", function (e) { if (e.target.dataset.t) { current = e.target.dataset.t; renderDocs(); } });
+  renderDocs();
+</script>
 </body>
 </html>
