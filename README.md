@@ -1,3 +1,5 @@
+**[View the project site](https://evelinortiz-munoz-code.github.io/finalproject/)**
+
 **PROBLEM DEFINITION:** The rise of food insecurity in Rhode Island is projected to worsen amidst rising grocery prices and federal policy cuts to SNAP.
 	
 	Audience: Rhode Island stakeholders and policymakers
